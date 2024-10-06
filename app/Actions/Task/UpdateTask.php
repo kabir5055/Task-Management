@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Actions\Task;
+
+use App\Events\Task\TaskUpdated;
+use App\Models\Task;
+
+class UpdateTask
+{
+    public function update(Task $task, array $data): void
+    {
+        $updateField = key($data);
+
+        if (! in_array($updateField, ['labels'])) {
+            $task->update($data);
+
+            if ($updateField === 'group_id') {
+                $task->update(['order_column' => 0]);
+            }
+        }
+
+        if ($updateField === 'labels') {
+            $task->labels()->sync($data['labels']);
+        }
+    }
+}
