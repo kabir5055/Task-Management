@@ -65,7 +65,7 @@ export default function Sidebar() {
         visible: can('view client users') || can('view client companies'),
         links: [
           {
-            label: 'Users',
+            label: 'Clients',
             link: route('clients.users.index'),
             active: route().current('clients.users.*'),
             visible: can('view client users'),

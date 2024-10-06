@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Task;
 
-use App\Events\Task\TimeLogCreated;
-use App\Events\Task\TimeLogDeleted;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TimeLog\StoreTimeLogRequest;
 use App\Models\Project;
@@ -35,8 +33,6 @@ class TimeLogController extends Controller
             'minutes' => round((now()->timestamp - $timeLog->timer_start) / 60),
         ]);
 
-        TimeLogCreated::dispatch($task, $timeLog);
-
         return response()->json(['timeLog' => $timeLog->load(['user:id,name'])]);
     }
 
@@ -48,8 +44,6 @@ class TimeLogController extends Controller
             $request->validated() + ['user_id' => auth()->id()]
         );
 
-        TimeLogCreated::dispatch($task, $timeLog);
-
         return response()->json(['timeLog' => $timeLog->load(['user:id,name'])]);
     }
 
@@ -58,8 +52,6 @@ class TimeLogController extends Controller
         $this->authorize('delete', [$timeLog, $project]);
 
         $timeLog->delete();
-
-        TimeLogDeleted::dispatch($task, $timeLog->id);
 
         return response()->json();
     }
