@@ -48,11 +48,6 @@ class ClientCompany extends Model implements AuditableContract
         return $this->belongsTo(Country::class);
     }
 
-    public function currency(): BelongsTo
-    {
-        return $this->belongsTo(Currency::class);
-    }
-
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class);
